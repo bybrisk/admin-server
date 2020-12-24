@@ -1,0 +1,655 @@
+definitions:
+  AddDeliveryRequest:
+    description: post request for adding delivery
+    properties:
+      BybID:
+        type: string
+      CustomerAddress:
+        type: string
+      CustomerName:
+        type: string
+      itemWeight:
+        format: double
+        type: number
+        x-go-name: ItemWeight
+      latitude:
+        format: double
+        type: number
+        x-go-name: Latitude
+      longitude:
+        format: double
+        type: number
+        x-go-name: Longitude
+      paymentStatus:
+        type: boolean
+        x-go-name: PaymentStatus
+      phone:
+        type: string
+        x-go-name: Phone
+      pincode:
+        type: string
+        x-go-name: Pincode
+    type: object
+    x-go-package: github.com/bybrisk/delivery-api/data
+  AgentResponseBulk:
+    description: get all Agents Response struct
+    properties:
+      businessid:
+        description: BybID of business
+        type: string
+        x-go-name: BusinessID
+      result:
+        description: Array of agent details
+        items:
+          $ref: '#/definitions/AgentSummaryDetail'
+        type: array
+        x-go-name: Result
+    type: object
+    x-go-package: github.com/bybrisk/agents-api/data
+  AgentSummaryDetail:
+    properties:
+      AgentID:
+        description: Agent Username/ UserID given by Business (unique to that business)
+        type: string
+      AgentName:
+        description: Name of the agent
+        type: string
+      PhoneNumber:
+        description: 10 Digit Phone Number of the agent
+        type: string
+      PicURL:
+        description: The url of the profile pic for this agent
+        type: string
+      agentType:
+        description: Type of Agent
+        type: string
+        x-go-name: AgentType
+      bybid:
+        description: BybID of each agent
+        type: string
+        x-go-name: BybID
+    type: object
+    x-go-package: github.com/bybrisk/agents-api/data
+  AgentsPostSuccess:
+    description: post response
+    properties:
+      bybID:
+        description: uuid of the object (agent, business, etc.)
+        type: string
+        x-go-name: BybID
+      message:
+        description: Response message of success or failure
+        type: string
+        x-go-name: Message
+    type: object
+    x-go-package: github.com/bybrisk/agents-api/data
+  BusinessAccountPostSuccess:
+    description: post response
+    properties:
+      bybID:
+        type: string
+        x-go-name: BybID
+      message:
+        type: string
+        x-go-name: Message
+    type: object
+    x-go-package: github.com/bybrisk/businessAccount-api/data
+  BusinessAccountRequest:
+    description: BusinessAccountRequest defines the structure for an API BusinessAccount
+    properties:
+      Address:
+        description: Address of the business associated with the account
+        maxLength: 10000
+        type: string
+      BusinessCategory:
+        description: Category the business belongs to
+        maxLength: 1000
+        type: string
+      BusinessName:
+        description: Name of the business this account is for
+        maxLength: 1000
+        type: string
+      BusinessPlan:
+        description: Business plan ID
+        example: "1, 2, 3 or 4\t"
+        type: string
+      DeliveryConfig:
+        $ref: '#/definitions/DeliveryConfig'
+      Email:
+        description: The email Id associated with this account
+        example: user@provider.com
+        type: string
+      Password:
+        description: Password for the account
+        maxLength: 100
+        type: string
+      PicURL:
+        description: The url of the profile pic for this Account
+        maxLength: 1000
+        type: string
+      UserName:
+        description: The Username for this account
+        maxLength: 1000
+        type: string
+    required:
+    - UserName
+    - Email
+    - BusinessName
+    - BusinessCategory
+    - Password
+    - Address
+    - DeliveryConfig
+    - BusinessPlan
+    type: object
+    x-go-package: github.com/bybrisk/businessAccount-api/data
+  BusinessAccountResponse:
+    description: get response
+    properties:
+      Address:
+        type: string
+      BusinessCategory:
+        type: string
+      BusinessName:
+        type: string
+      BusinessPlan:
+        type: string
+      DeliveryConfig:
+        $ref: '#/definitions/DeliveryConfig'
+      DeliveryDelivered:
+        type: string
+      DeliveryPending:
+        type: string
+      Email:
+        type: string
+      PicURL:
+        type: string
+      UserName:
+        type: string
+      bybID:
+        type: string
+        x-go-name: UserID
+      profileConfiguration:
+        $ref: '#/definitions/ProfileConfig'
+    type: object
+    x-go-package: github.com/bybrisk/businessAccount-api/data
+  DeliveryConfig:
+    properties:
+      AutoScaling:
+        type: boolean
+      AvgWorkingHours:
+        format: int64
+        type: integer
+      BybriskDelivery:
+        type: boolean
+      DeliveryAgent:
+        format: int64
+        type: integer
+      InstantDelivery:
+        type: boolean
+    type: object
+    x-go-package: github.com/bybrisk/structs
+  DeliveryPostSuccess:
+    description: post response
+    properties:
+      deliveryID:
+        type: string
+        x-go-name: DeliveryID
+      message:
+        type: string
+        x-go-name: Message
+    type: object
+    x-go-package: github.com/bybrisk/delivery-api/data
+  GenericError:
+    description: GenericError is a generic error message returned by a server
+    properties:
+      message:
+        type: string
+        x-go-name: Message
+    type: object
+    x-go-package: github.com/bybrisk/agents-api/handlers
+  NewAgentsRequest:
+    description: post request to add agents
+    properties:
+      Address:
+        description: Permanent Address of the Agent
+        maxLength: 10000
+        type: string
+      AgentID:
+        description: Agent Username/ UserID given by Business (unique to that business)
+        type: string
+      AgentName:
+        description: The Name of the agent
+        maxLength: 1000
+        type: string
+      BusinessID:
+        description: BybID of the business the agent belongs to
+        maxLength: 1000
+        type: string
+      MaxHourCapacity:
+        description: Maximum duration (in hr) the agent can work on a single trip
+        format: int64
+        maxLength: 1000
+        type: integer
+      MaxWeightCapacity:
+        description: Maximum weight (in Kg) the agent can carry in a single trip
+        format: int64
+        maxLength: 1000
+        type: integer
+      PhoneNumber:
+        description: 10 Digit Phone Number of the agent
+        maxLength: 1000
+        type: string
+      PicURL:
+        description: The url of the profile pic for this agent
+        maxLength: 1000
+        type: string
+      agentType:
+        description: Type of Agent
+        example: DELIVERY | CONTRACT
+        type: string
+        x-go-name: AgentType
+    required:
+    - AgentName
+    - agentType
+    - BusinessID
+    - PhoneNumber
+    - Address
+    - MaxWeightCapacity
+    - MaxHourCapacity
+    - AgentID
+    type: object
+    x-go-package: github.com/bybrisk/agents-api/data
+  ProfileConfig:
+    properties:
+      MessagePlan:
+        format: int64
+        type: integer
+      Tracking:
+        type: boolean
+      Zone:
+        format: int64
+        type: integer
+      ZoneID:
+        items:
+          type: string
+        type: array
+    type: object
+    x-go-package: github.com/bybrisk/structs
+  SingleAgentResponse:
+    description: Single Agent Get Response
+    properties:
+      Address:
+        description: Permanent Address of the Agent
+        type: string
+      AgentID:
+        description: Agent Username/ UserID given by Business (unique to that business)
+        type: string
+      AgentName:
+        description: The Name of the agent
+        type: string
+      BusinessID:
+        description: BybID of the business the agent belongs to
+        type: string
+      MaxHourCapacity:
+        description: Maximum duration (in hr) the agent can work on a single trip
+        format: int64
+        type: integer
+      MaxWeightCapacity:
+        description: Maximum weight (in Kg) the agent can carry in a single trip
+        format: int64
+        type: integer
+      PhoneNumber:
+        description: 10 Digit Phone Number of the agent
+        type: string
+      PicURL:
+        description: The url of the profile pic for this agent
+        type: string
+      agentType:
+        description: Type of Agent
+        type: string
+        x-go-name: AgentType
+    type: object
+    x-go-package: github.com/bybrisk/agents-api/data
+  UpdateAgentsRequest:
+    description: update agents request
+    properties:
+      Address:
+        description: New Permanent Address of the Agent
+        maxLength: 10000
+        type: string
+      AgentID:
+        description: Modified Agent Username/ UserID given by Business (unique to that business)
+        maxLength: 1000
+        type: string
+      AgentName:
+        description: Modified Name of the agent
+        maxLength: 1000
+        type: string
+      MaxHourCapacity:
+        description: New Maximum duration (in hr) the agent can work on a single trip
+        format: int64
+        maxLength: 1000
+        type: integer
+      MaxWeightCapacity:
+        description: New Maximum weight (in Kg) the agent can carry in a single trip
+        format: int64
+        maxLength: 1000
+        type: integer
+      PhoneNumber:
+        description: 10 Digit Phone Number of the agent
+        maxLength: 1000
+        type: string
+      agentType:
+        description: Type of Agent
+        example: DELIVERY | CONTRACT
+        type: string
+        x-go-name: AgentType
+      bybID:
+        description: BybID of the agent from database
+        maxLength: 1000
+        type: string
+        x-go-name: BybID
+      picurl:
+        description: The url of the profile pic for this agent
+        maxLength: 1000
+        type: string
+        x-go-name: PicURL
+    required:
+    - bybID
+    - AgentName
+    - agentType
+    - PhoneNumber
+    - Address
+    - MaxWeightCapacity
+    - MaxHourCapacity
+    - AgentID
+    type: object
+    x-go-package: github.com/bybrisk/agents-api/data
+  UpdateBusinessAccountRequest:
+    description: update request
+    properties:
+      Address:
+        type: string
+      BusinessName:
+        type: string
+      BybID:
+        type: string
+      DeliveryConfig:
+        $ref: '#/definitions/DeliveryConfig'
+      Email:
+        type: string
+      PicURL:
+        type: string
+      UserName:
+        type: string
+    type: object
+    x-go-package: github.com/bybrisk/businessAccount-api/data
+  UpdatePasswordRequest:
+    description: post update password
+    properties:
+      bybID:
+        type: string
+        x-go-name: BybID
+      newPassword:
+        type: string
+        x-go-name: NewPassword
+      oldPassword:
+        type: string
+        x-go-name: OldPassword
+    type: object
+    x-go-package: github.com/bybrisk/businessAccount-api/data
+  ValidationError:
+    description: ValidationError is a collection of validation error messages
+    properties:
+      messages:
+        items:
+          type: string
+        type: array
+        x-go-name: Messages
+    type: object
+    x-go-package: github.com/bybrisk/agents-api/handlers
+consumes:
+  - application/json
+produces:
+  - application/json
+schemes:
+  - https
+
+info:
+  description: Documentation for Krayfin Maps API
+  title: Krayfin Map API
+  contact: {name: 'Shashank Prakash', url: 'http://csol99.blogspot.com', email: imctobybrisk@gmail.com}
+  version: 1.0.0,
+
+
+host: developers.bybrisk.com
+basePath: /
+paths:
+  /account:
+    post:
+      description: Create a new Business Account
+      operationId: createBusinessAccount
+      parameters:
+      - description: |-
+          Product data structure or Create.
+          Note: the id field is ignored by create operations
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/BusinessAccountRequest'
+      responses:
+        "200":
+          $ref: '#/responses/businessAccountPostResponse'
+        "422":
+          $ref: '#/responses/errorValidation'
+        "501":
+          $ref: '#/responses/errorResponse'
+      tags:
+      - businessAccount
+  /account/{id}:
+    get:
+      description: Get details of a existing Business Account by ID
+      operationId: getBusinessAccount
+      parameters:
+      - description: 'The bybID of the Business Account '
+        format: int64
+        in: path
+        name: id
+        required: true
+        type: integer
+        x-go-name: ID
+      responses:
+        "200":
+          $ref: '#/responses/businessAccountGetResponse'
+        "422":
+          $ref: '#/responses/errorValidation'
+        "501":
+          $ref: '#/responses/errorResponse'
+      tags:
+      - businessAccount
+  /accountUpdate:
+    post:
+      description: Update an existing Business Account with ID
+      operationId: updateBusinessAccount
+      parameters:
+      - description: |-
+          Product data structure to Update.
+          Note: All the field are required to be sent with the post request along with the updates.
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/UpdateBusinessAccountRequest'
+      responses:
+        "200":
+          $ref: '#/responses/businessAccountPostResponse'
+        "422":
+          $ref: '#/responses/errorValidation'
+        "501":
+          $ref: '#/responses/errorResponse'
+      tags:
+      - businessAccount
+  /accountUpdate/password:
+    post:
+      description: Update password of an existing Business Account with ID
+      operationId: updatePassword
+      parameters:
+      - description: |-
+          Account data structure to Update.
+          Note: New password is required to be sent with the post request along with the old Password.
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/UpdatePasswordRequest'
+      responses:
+        "200":
+          $ref: '#/responses/businessAccountPostResponse'
+        "422":
+          $ref: '#/responses/errorValidation'
+        "501":
+          $ref: '#/responses/errorResponse'
+      tags:
+      - businessAccount
+  /addDelivery:
+    post:
+      description: Add a delivery for cluster formation
+      operationId: addDelivery
+      parameters:
+      - description: |-
+          Product data structure or Create.
+          Note: the id field is ignored by create operations
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/AddDeliveryRequest'
+      responses:
+        "200":
+          $ref: '#/responses/deliveryPostResponse'
+        "422":
+          $ref: '#/responses/errorValidation'
+        "501":
+          $ref: '#/responses/errorResponse'
+      tags:
+      - delivery
+  /agents/all/{id}:
+    get:
+      operationId: getAllAgents
+      responses:
+        "200":
+          $ref: '#/responses/getAllAgentsDetails'
+        "422":
+          $ref: '#/responses/errorValidation'
+        "501":
+          $ref: '#/responses/errorResponse'
+      summary: Get summerized details of all the agents registed on a business account.
+      tags:
+      - agents
+  /agents/create:
+    post:
+      operationId: createAgents
+      parameters:
+      - description: |-
+          Agents data structure to Create.
+          Note: the id field is ignored by create operations
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/NewAgentsRequest'
+      responses:
+        "200":
+          $ref: '#/responses/agentsPostResponse'
+        "422":
+          $ref: '#/responses/errorValidation'
+        "501":
+          $ref: '#/responses/errorResponse'
+      summary: Add an agent (Delivery partner, contracter, etc) to your business account.
+      tags:
+      - agents
+  /agents/delete/{id}:
+    get:
+      operationId: deleteAgents
+      responses:
+        "200":
+          $ref: '#/responses/agentsPostResponse'
+        "422":
+          $ref: '#/responses/errorValidation'
+        "501":
+          $ref: '#/responses/errorResponse'
+      summary: Delete an existing agent registered to a business account.
+      tags:
+      - agents
+  /agents/one/{id}:
+    get:
+      operationId: getOneAgents
+      responses:
+        "200":
+          $ref: '#/responses/getSingleAgentsDetails'
+        "422":
+          $ref: '#/responses/errorValidation'
+        "501":
+          $ref: '#/responses/errorResponse'
+      summary: Get full details of a single agent by it's BybID.
+      tags:
+      - agents
+  /agents/update:
+    post:
+      operationId: updateAgents
+      parameters:
+      - description: |-
+          Data structure to update an existing agent.
+          Note: You need to send all the details required or they will be overwritten
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/UpdateAgentsRequest'
+      responses:
+        "200":
+          $ref: '#/responses/agentsPostResponse'
+        "422":
+          $ref: '#/responses/errorValidation'
+        "501":
+          $ref: '#/responses/errorResponse'
+      summary: Modify an existing agent using BybID of this agent.
+      tags:
+      - agents
+responses:
+  agentsPostResponse:
+    description: Success message on adding a single Agent
+    schema:
+      $ref: '#/definitions/AgentsPostSuccess'
+  businessAccountGetResponse:
+    description: Details of a single Business Account
+    schema:
+      $ref: '#/definitions/BusinessAccountResponse'
+  businessAccountPostResponse:
+    description: Success message on a single Business Account creation
+    schema:
+      $ref: '#/definitions/BusinessAccountPostSuccess'
+  deliveryPostResponse:
+    description: Success message on a single Delivery addition
+    schema:
+      $ref: '#/definitions/DeliveryPostSuccess'
+  errorResponse:
+    description: Generic error message returned as a string
+    schema:
+      $ref: '#/definitions/GenericError'
+  errorValidation:
+    description: Validation errors defined as an array of strings
+    schema:
+      $ref: '#/definitions/ValidationError'
+  getAllAgentsDetails:
+    description: Summary of all the agents of a business account
+    schema:
+      $ref: '#/definitions/AgentResponseBulk'
+  getSingleAgentsDetails:
+    description: Details of a single agents of a particular business account
+    schema:
+      $ref: '#/definitions/SingleAgentResponse'
+  noContentResponse:
+    description: No content is returned by this API endpoint
+swagger: "2.0"
